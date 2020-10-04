@@ -27,6 +27,7 @@ class Roomba extends Component {
         let currentLocation = this.state.roombaLocation;
         let drivingInstructions = this.state.drivingInstructions;
         let dirtArr;
+        let wallsArr;
         //gets roomba location based on action
         const roombaMovement = roomba[0].drivingInstructions.map(instruct => {
             currentLocation = this.getDirections(currentLocation, instruct);
@@ -35,14 +36,15 @@ class Roomba extends Component {
         //add initial location to the beginning of the array
         roombaMovement.unshift(startLocation);
         drivingInstructions.unshift("");
-        dirtArr = this.cleanDirt(roombaMovement);
+        dirtArr = this.getDirt(roombaMovement);
+        wallsArr = this.wallsHit(roombaMovement);
         this.setState({
             output: [
                 {
                     roombaLocation: roombaMovement,
                     action: drivingInstructions,
                     dirtCollected: dirtArr,
-                    wallsHit: []
+                    wallsHit: wallsArr
                 }
             ]
         }, () => console.log(this.state.output));
@@ -83,7 +85,7 @@ class Roomba extends Component {
         return coordinates;
     }
 
-    cleanDirt = roombaMovement => {
+    getDirt = roombaMovement => {
         let filteredCoords = [];
         let dirtCollected = 0;
         let dirtArr = [];
@@ -98,6 +100,20 @@ class Roomba extends Component {
             return dirtCollected;
         });
         return dirtArr;
+    }
+
+    wallsHit = roombaMovement => {
+        let wallsArr;
+        let wallsHit = 0;
+        wallsArr = roombaMovement.map((movement, index) => {
+            if (roombaMovement[index] !== 0) {
+                if (movement === roombaMovement[index - 1]) {
+                    wallsHit++; 
+                }
+            }
+            return wallsHit;
+        });
+        return wallsArr;
     }
 
     render() {
