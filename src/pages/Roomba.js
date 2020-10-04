@@ -26,9 +26,7 @@ class Roomba extends Component {
         let startLocation = this.state.roombaLocation;
         let currentLocation = this.state.roombaLocation;
         let drivingInstructions = this.state.drivingInstructions;
-        let dirtCollected = 0;
-        let dirtArr = [];
-        let filteredCoords = [];
+        let dirtArr;
         //gets roomba location based on action
         const roombaMovement = roomba[0].drivingInstructions.map(instruct => {
             currentLocation = this.getDirections(currentLocation, instruct);
@@ -36,30 +34,18 @@ class Roomba extends Component {
         });
         //add initial location to the beginning of the array
         roombaMovement.unshift(startLocation);
-
-        filteredCoords = roombaMovement.filter((coordinates, index) => roombaMovement.indexOf(coordinates) === index);
-        dirtArr = filteredCoords.map(location => {
-            this.state.dirtLocation.map(dirt => {
-                //convert to string to compare array
-                if (JSON.stringify(location) === JSON.stringify(dirt)) {
-                    dirtCollected++;
-                }
-            });
-            return dirtCollected;
-        });
-        // console.log(this.state.dirtLocation);
-        console.log(dirtArr);
         drivingInstructions.unshift("");
+        dirtArr = this.cleanDirt(roombaMovement);
         this.setState({
             output: [
                 {
                     roombaLocation: roombaMovement,
                     action: drivingInstructions,
                     dirtCollected: dirtArr,
-                    wallsHit: 0
+                    wallsHit: []
                 }
             ]
-        });
+        }, () => console.log(this.state.output));
     }
 
     getDirections = (location, direction) => {
@@ -69,22 +55,22 @@ class Roomba extends Component {
         switch(direction) {
             //north
             case "N":
-                newLocation = location[1]++;
+                newLocation = location[1] + 1;
                 coordinates = [location[0], newLocation];
                 break;
             //east
             case "E":
-                newLocation = location[0]++;
+                newLocation = location[0] + 1;
                 coordinates = [newLocation, location[1]];
                 break;
             //south
             case "S":
-                newLocation = location[1]--;
+                newLocation = location[1] - 1;
                 coordinates = [location[0], newLocation];
                 break;
             //west
             case "W":
-                newLocation = location[0]--;
+                newLocation = location[0] - 1;
                 coordinates = [newLocation, location[1]];
                 break;
             default:
@@ -95,6 +81,23 @@ class Roomba extends Component {
             coordinates = location;
         }
         return coordinates;
+    }
+
+    cleanDirt = roombaMovement => {
+        let filteredCoords = [];
+        let dirtCollected = 0;
+        let dirtArr = [];
+        filteredCoords = roombaMovement.filter((coordinates, index) => roombaMovement.indexOf(coordinates) === index);
+        dirtArr = filteredCoords.map(location => {
+            this.state.dirtLocation.map(dirt => {
+                //convert to string to compare array
+                if (JSON.stringify(location) === JSON.stringify(dirt)) {
+                    dirtCollected++;
+                }
+            });
+            return dirtCollected;
+        });
+        return dirtArr;
     }
 
     render() {
