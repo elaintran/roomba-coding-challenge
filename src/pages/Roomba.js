@@ -19,10 +19,10 @@ class Roomba extends Component {
     }
 
     componentDidMount() {
-        this.getDimensions();
+        this.getOutput();
     }
 
-    getDimensions = () => {
+    getOutput = () => {
         let startLocation = this.state.roombaLocation;
         let currentLocation = this.state.roombaLocation;
         let drivingInstructions = this.state.drivingInstructions;
@@ -33,7 +33,18 @@ class Roomba extends Component {
         });
         //add initial location to the beginning of the array
         roombaMovement.unshift(startLocation);
+        console.log(roombaMovement);
         drivingInstructions.unshift("");
+        this.setState({
+            output: [
+                {
+                    roombaLocation: roombaMovement,
+                    action: drivingInstructions,
+                    dirtCollected: 0,
+                    wallsHit: 0
+                }
+            ]
+        });
     }
 
     getDirections = (location, direction) => {
@@ -43,23 +54,23 @@ class Roomba extends Component {
         switch(direction) {
             //north
             case "N":
-                newLocation = location[0] + 1;
-                coordinates = [newLocation, location[1]];
-                break;
-            //east
-            case "E":
                 newLocation = location[1] + 1;
                 coordinates = [location[0], newLocation];
                 break;
+            //east
+            case "E":
+                newLocation = location[0] + 1;
+                coordinates = [newLocation, location[1]];
+                break;
             //south
             case "S":
-                newLocation = location[0] - 1;
-                coordinates = [newLocation, location[1]];
+                newLocation = location[1] - 1;
+                coordinates = [location[0], newLocation];
                 break;
             //west
             case "W":
-                newLocation = location[1] - 1;
-                coordinates = [location[0], newLocation];
+                newLocation = location[0] - 1;
+                coordinates = [newLocation, location[1]];
                 break;
             default:
                 coordinates = location;
