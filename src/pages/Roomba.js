@@ -12,8 +12,8 @@ class Roomba extends Component {
             {
                 roombaLocation: [],
                 action: [],
-                dirtCollected: 0,
-                wallsHit: 0
+                dirtCollected: [],
+                wallsHit: []
             }
         ]
     }
@@ -27,6 +27,7 @@ class Roomba extends Component {
         let currentLocation = this.state.roombaLocation;
         let drivingInstructions = this.state.drivingInstructions;
         let dirtCollected = 0;
+        let dirtArr = [];
         let filteredCoords = [];
         //gets roomba location based on action
         const roombaMovement = roomba[0].drivingInstructions.map(instruct => {
@@ -35,23 +36,26 @@ class Roomba extends Component {
         });
         //add initial location to the beginning of the array
         roombaMovement.unshift(startLocation);
-        filteredCoords = roombaMovement.filter((coordinates, index) => roombaMovement.indexOf(coordinates) == index);
-        filteredCoords.map(location => {
+
+        filteredCoords = roombaMovement.filter((coordinates, index) => roombaMovement.indexOf(coordinates) === index);
+        dirtArr = filteredCoords.map(location => {
             this.state.dirtLocation.map(dirt => {
+                //convert to string to compare array
                 if (JSON.stringify(location) === JSON.stringify(dirt)) {
                     dirtCollected++;
                 }
             });
+            return dirtCollected;
         });
         // console.log(this.state.dirtLocation);
-        console.log(dirtCollected);
+        console.log(dirtArr);
         drivingInstructions.unshift("");
         this.setState({
             output: [
                 {
                     roombaLocation: roombaMovement,
                     action: drivingInstructions,
-                    dirtCollected: dirtCollected,
+                    dirtCollected: dirtArr,
                     wallsHit: 0
                 }
             ]
@@ -65,22 +69,22 @@ class Roomba extends Component {
         switch(direction) {
             //north
             case "N":
-                newLocation = location[1] + 1;
+                newLocation = location[1]++;
                 coordinates = [location[0], newLocation];
                 break;
             //east
             case "E":
-                newLocation = location[0] + 1;
+                newLocation = location[0]++;
                 coordinates = [newLocation, location[1]];
                 break;
             //south
             case "S":
-                newLocation = location[1] - 1;
+                newLocation = location[1]--;
                 coordinates = [location[0], newLocation];
                 break;
             //west
             case "W":
-                newLocation = location[0] - 1;
+                newLocation = location[0]--;
                 coordinates = [newLocation, location[1]];
                 break;
             default:
