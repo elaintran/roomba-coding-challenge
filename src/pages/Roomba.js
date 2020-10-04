@@ -34,13 +34,12 @@ class Roomba extends Component {
         //add initial location to the beginning of the array
         roombaMovement.unshift(startLocation);
         drivingInstructions.unshift("");
-        console.log(roombaMovement);
     }
 
     getDirections = (location, direction) => {
-        // let location = this.state.roombaLocation;
         let newLocation;
         let coordinates;
+        let roomDimensions = this.state.roomDimensions;
         switch(direction) {
             //north
             case "N":
@@ -64,6 +63,10 @@ class Roomba extends Component {
                 break;
             default:
                 coordinates = location;
+        }
+        //check if roomba collided and prevent it from moving
+        if (coordinates[0] > roomDimensions[0] || coordinates[0] < 0 || coordinates[1] > roomDimensions[1] || coordinates[1] < 0) {
+            coordinates = location;
         }
         return coordinates;
     }
