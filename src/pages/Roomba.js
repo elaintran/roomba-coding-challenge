@@ -127,7 +127,7 @@ class Roomba extends Component {
         let wallsArr;
         let wallsHit = 0;
         wallsArr = roombaMovement.map((movement, index) => {
-            if (movement === roombaMovement[index - 1]) {
+            if (JSON.stringify(movement) === JSON.stringify(roombaMovement[index - 1])) {
                 wallsHit++; 
             }
             return wallsHit;
