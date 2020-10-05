@@ -39,14 +39,14 @@ class Roomba extends Component {
     }
 
     getOutput = () => {
-        let startLocation = [...this.state.roombaLocation];
+        const startLocation = [...this.state.roombaLocation];
+        const drivingInstructions = [...this.state.drivingInstructions];
         let currentLocation = [...this.state.roombaLocation];
-        let drivingInstructions = [...this.state.drivingInstructions];
         let dirtArr;
         let wallsArr;
         let output;
         //gets roomba location based on action
-        const roombaMovement = roomba[0].drivingInstructions.map(instruct => {
+        const roombaMovement = drivingInstructions.map(instruct => {
             currentLocation = this.getDirections(currentLocation, instruct);
             return currentLocation;
         });
@@ -72,7 +72,7 @@ class Roomba extends Component {
     getDirections = (location, direction) => {
         let newLocation;
         let coordinates;
-        let roomDimensions = this.state.roomDimensions;
+        const roomDimensions = this.state.roomDimensions;
         switch(direction) {
             //north
             case "N":
@@ -106,7 +106,7 @@ class Roomba extends Component {
 
     getDirt = roombaMovement => {
         let dirtCollected = 0;
-        let dirtLocation = [...this.state.dirtLocation];
+        const dirtLocation = [...this.state.dirtLocation];
         let dirtArr = [];
         dirtArr = roombaMovement.map(location => {
             for (let i = 0; i < dirtLocation.length; i++) {
