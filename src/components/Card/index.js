@@ -4,8 +4,10 @@ import "./style.css";
 function Card(props) {
     return (
         <div className="card">
-            <p>{props.title}</p>
-            <h2>{props.output}</h2>
+            <div className="card-info">
+                <p>{props.title}</p>
+                <h2>{props.output}</h2>
+            </div>
         </div>
     );
 }

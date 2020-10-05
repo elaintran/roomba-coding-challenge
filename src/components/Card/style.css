@@ -5,6 +5,8 @@
     margin: 20px;
     padding: 25px 20px;
     text-align: center;
+    display: flex;
+    align-items: center;
 }
 
 .card p, .card h2 {

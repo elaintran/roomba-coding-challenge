@@ -26,7 +26,14 @@ class Roomba extends Component {
     }
 
     componentDidMount() {
-        this.getOutput();
+        this.filterDirt();
+    }
+
+    filterDirt = () => {
+        const dirt = [...this.state.dirtLocation].map(JSON.stringify);
+        let dirtSet = new Set(dirt);
+        let dirtArr = Array.from(dirtSet, JSON.parse);
+        this.setState({ dirtLocation: dirtArr }, () => this.getOutput());
     }
 
     getOutput = () => {
