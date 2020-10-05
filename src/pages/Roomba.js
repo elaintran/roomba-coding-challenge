@@ -30,8 +30,11 @@ class Roomba extends Component {
     }
 
     filterDirt = () => {
+        //convert array to string
         const dirt = [...this.state.dirtLocation].map(JSON.stringify);
+        //remove duplicates
         let dirtSet = new Set(dirt);
+        //place back into array from string
         let dirtArr = Array.from(dirtSet, JSON.parse);
         this.setState({ dirtLocation: dirtArr }, () => this.getOutput());
     }
@@ -50,6 +53,7 @@ class Roomba extends Component {
         });
         //add initial location to the beginning of the array
         roombaMovement.unshift(startLocation);
+        //add empty string to beginning of array since the roomba does not move on step 1
         drivingInstructions.unshift("");
         dirtArr = this.getDirt(roombaMovement);
         wallsArr = this.wallsHit(roombaMovement);
@@ -123,10 +127,8 @@ class Roomba extends Component {
         let wallsArr;
         let wallsHit = 0;
         wallsArr = roombaMovement.map((movement, index) => {
-            if (roombaMovement[index] !== 0) {
-                if (movement === roombaMovement[index - 1]) {
-                    wallsHit++; 
-                }
+            if (movement === roombaMovement[index - 1]) {
+                wallsHit++; 
             }
             return wallsHit;
         });
