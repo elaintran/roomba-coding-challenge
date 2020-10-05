@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import Container from "../components/Container";
+import Table from "../components/Table";
 import roomba from "../roomba.json";
 
 class Roomba extends Component {
@@ -28,6 +30,7 @@ class Roomba extends Component {
         let drivingInstructions = this.state.drivingInstructions;
         let dirtArr;
         let wallsArr;
+        let output;
         //gets roomba location based on action
         const roombaMovement = roomba[0].drivingInstructions.map(instruct => {
             currentLocation = this.getDirections(currentLocation, instruct);
@@ -38,16 +41,17 @@ class Roomba extends Component {
         drivingInstructions.unshift("");
         dirtArr = this.getDirt(roombaMovement);
         wallsArr = this.wallsHit(roombaMovement);
-        this.setState({
-            output: [
-                {
-                    roombaLocation: roombaMovement,
-                    action: drivingInstructions,
-                    dirtCollected: dirtArr,
-                    wallsHit: wallsArr
-                }
-            ]
-        }, () => console.log(this.state.output));
+
+        output = roombaMovement.map((roomba, index) => {
+            return {
+                roombaLocation: roomba,
+                action: drivingInstructions[index],
+                dirtCollected: dirtArr[index],
+                wallsHit: wallsArr[index]
+            }
+        });
+
+        this.setState({ output: output }, () => console.log(this.state.output));
     }
 
     getDirections = (location, direction) => {
@@ -118,9 +122,21 @@ class Roomba extends Component {
 
     render() {
         return (
-            <div>
-                <p></p>
-            </div>
+            <Container>
+                <Table>
+                    {this.state.output.map((output, index) => {
+                        return (
+                            <div className="table-row">
+                                <p className="title">{index + 1}</p>
+                                <p className="title">{output.roombaLocation.toString()}</p>
+                                <p className="title">{output.action}</p>
+                                <p className="title">{output.dirtCollected}</p>
+                                <p className="title">{output.wallsHit}</p>
+                            </div>
+                        );
+                    })}
+                </Table>
+            </Container>
         );
     }
 }
