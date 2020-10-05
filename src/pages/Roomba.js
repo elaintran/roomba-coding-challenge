@@ -30,9 +30,9 @@ class Roomba extends Component {
     }
 
     getOutput = () => {
-        let startLocation = this.state.roombaLocation;
-        let currentLocation = this.state.roombaLocation;
-        let drivingInstructions = this.state.drivingInstructions;
+        let startLocation = [...this.state.roombaLocation];
+        let currentLocation = [...this.state.roombaLocation];
+        let drivingInstructions = [...this.state.drivingInstructions];
         let dirtArr;
         let wallsArr;
         let output;
@@ -56,7 +56,7 @@ class Roomba extends Component {
             }
         });
 
-        this.setState({ output: output }, () => console.log(this.state.output));
+        this.setState({ output: output });
     }
 
     getDirections = (location, direction) => {
@@ -96,7 +96,7 @@ class Roomba extends Component {
 
     getDirt = roombaMovement => {
         let dirtCollected = 0;
-        let dirtLocation = this.state.dirtLocation;
+        let dirtLocation = [...this.state.dirtLocation];
         let dirtArr = [];
         dirtArr = roombaMovement.map(location => {
             for (let i = 0; i < dirtLocation.length; i++) {
@@ -145,6 +145,7 @@ class Roomba extends Component {
                 <CardContainer>
                     <Card title="Final Position" output={this.state.output[this.state.output.length - 1].roombaLocation.toString().replace(",", ", ")} />
                     <Card title="Total Dirt Collected" output={this.state.output[this.state.output.length - 1].dirtCollected} />
+                    <Card title="Total Unique Dirt Locations" output={this.state.dirtLocation.length} />
                     <Card title="Total Distance Traveled" output={this.state.output.length - this.state.output[this.state.output.length - 1].wallsHit - 1} />
                     <Card title="Total Walls Hit" output={this.state.output[this.state.output.length - 1].wallsHit} />
                 </CardContainer>
