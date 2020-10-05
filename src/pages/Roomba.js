@@ -3,6 +3,8 @@ import Container from "../components/Container";
 import Title from "../components/Title";
 import Table from "../components/Table";
 import Row from "../components/Row";
+import CardContainer from "../components/CardContainer";
+import Card from "../components/Card"
 import roomba from "../roomba.json";
 
 class Roomba extends Component {
@@ -12,6 +14,7 @@ class Roomba extends Component {
         dirtLocation: roomba[0].dirtLocations,
         drivingInstructions: roomba[0].drivingInstructions,
         currentLocation: [],
+        distanceTraveled: 0,
         output: [
             {
                 roombaLocation: [],
@@ -139,6 +142,12 @@ class Roomba extends Component {
                         />
                     })}
                 </Table>
+                <CardContainer>
+                    <Card title="Final Position" output={this.state.output[this.state.output.length - 1].roombaLocation.toString().replace(",", ", ")} />
+                    <Card title="Total Dirt Collected" output={this.state.output[this.state.output.length - 1].dirtCollected} />
+                    <Card title="Total Distance Traveled" output={this.state.output.length - this.state.output[this.state.output.length - 1].wallsHit - 1} />
+                    <Card title="Total Walls Hit" output={this.state.output[this.state.output.length - 1].wallsHit} />
+                </CardContainer>
             </Container>
         );
     }
