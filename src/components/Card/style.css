@@ -3,10 +3,11 @@
     border-radius: 20px;
     width: 100%;
     margin: 20px;
-    padding: 25px 20px;
+    padding: 25px 10px;
     text-align: center;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .card p, .card h2 {
@@ -16,4 +17,11 @@
 .card p {
     font-weight: bold;
     text-transform: uppercase;
+}
+
+@media (max-width: 930px) {
+    .card {
+        width: calc(50% - 60px);
+        margin-bottom: 10px;
+    }
 }
