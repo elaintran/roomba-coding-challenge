@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Container from "../components/Container";
+import Title from "../components/Title";
 import Table from "../components/Table";
+import Row from "../components/Row";
 import roomba from "../roomba.json";
 
 class Roomba extends Component {
@@ -13,9 +15,9 @@ class Roomba extends Component {
         output: [
             {
                 roombaLocation: [],
-                action: [],
-                dirtCollected: [],
-                wallsHit: []
+                action: "",
+                dirtCollected: 0,
+                wallsHit: 0
             }
         ]
     }
@@ -90,17 +92,18 @@ class Roomba extends Component {
     }
 
     getDirt = roombaMovement => {
-        let filteredCoords = [];
         let dirtCollected = 0;
+        let dirtLocation = this.state.dirtLocation;
         let dirtArr = [];
-        filteredCoords = roombaMovement.filter((coordinates, index) => roombaMovement.indexOf(coordinates) === index);
-        dirtArr = filteredCoords.map(location => {
-            this.state.dirtLocation.map(dirt => {
-                //convert to string to compare array
-                if (JSON.stringify(location) === JSON.stringify(dirt)) {
+        dirtArr = roombaMovement.map(location => {
+            for (let i = 0; i < dirtLocation.length; i++) {
+                //converts array to string to compare
+                if (JSON.stringify(location) === JSON.stringify(dirtLocation[i])) {
                     dirtCollected++;
+                    //remove dirt location from array to prevent the same location from being counted again
+                    dirtLocation.splice(i, 1);
                 }
-            });
+            }
             return dirtCollected;
         });
         return dirtArr;
@@ -123,17 +126,17 @@ class Roomba extends Component {
     render() {
         return (
             <Container>
+                <Title>Roomba Coding Challenge</Title>
                 <Table>
                     {this.state.output.map((output, index) => {
-                        return (
-                            <div className="table-row">
-                                <p className="title">{index + 1}</p>
-                                <p className="title">{output.roombaLocation.toString()}</p>
-                                <p className="title">{output.action}</p>
-                                <p className="title">{output.dirtCollected}</p>
-                                <p className="title">{output.wallsHit}</p>
-                            </div>
-                        );
+                        return <Row
+                            step={index + 1}
+                            roombaLocation={output.roombaLocation.toString().replace(",", ", ")}
+                            action={output.action}
+                            dirt={output.dirtCollected}
+                            wallsHit={output.wallsHit}
+                            key={index}
+                        />
                     })}
                 </Table>
             </Container>

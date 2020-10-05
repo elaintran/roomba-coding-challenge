@@ -1,0 +1,8 @@
+.output-row {
+    display: flex;
+    padding: 5px 4px;
+}
+
+.output-item {
+    width: 23%;
+}

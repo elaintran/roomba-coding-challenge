@@ -7,18 +7,17 @@
 
 .table-row {
     display: flex;
-    padding: 20px 4px;
+    padding: 15px 4px 5px;
 }
 
 .table-row p {
-    font-size: 12px;
     font-weight: bold;
 }
 
-.title {
+.table-label {
     text-transform: uppercase;
 }
 
-.title {
+.table-label {
     width: 23%;
 }
