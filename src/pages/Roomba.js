@@ -14,7 +14,6 @@ class Roomba extends Component {
         dirtLocation: roomba[0].dirtLocations,
         drivingInstructions: roomba[0].drivingInstructions,
         currentLocation: [],
-        distanceTraveled: 0,
         output: [
             {
                 roombaLocation: [],
